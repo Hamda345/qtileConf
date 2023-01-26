@@ -46,8 +46,11 @@ keys = [
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawn("rofi -show drun -theme photon-violet"), desc="Spawn a command using a prompt widget"),
+    Key([mod], "d", lazy.spawn("rofi -show drun -theme photon-violet"), desc="Spawn a command using a prompt widget"),
     Key([mod], "x", lazy.spawn("rofi -show p -modi p:rofi-power-menu -theme photon-violet"), desc="Spawn a command using a prompt widget"),
+    Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"), desc="Spawn a command using a prompt widget"),
+    Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"), desc="Spawn a command using a prompt widget"),
+    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Spawn a command using a prompt widget"),
      Key(['mod4'], 'p', lazy.run_extension(extension.DmenuRun(
         dmenu_prompt=">",
         dmenu_font="JetBrains Mono",
@@ -59,7 +62,18 @@ keys = [
     ))),
 ]
 
-groups = [Group(i) for i in "azety"]
+group_names = ["ampersand", "eacute", "quotedbl", "apostrophe", "parenleft",]
+
+group_labels = ["", "", "", "", "",]
+
+groups = []
+for i in range(len(group_names)):
+
+    groups.append(
+        Group(
+            name=group_names[i],
+            label=group_labels[i],
+        ))
 
 for i in groups:
     keys.extend(
@@ -127,7 +141,7 @@ screens = [
                 # widget.StatusNotifier(),
                 widget.Systray(),
                 widget.Memory(measure_mem="G"),
-                widget.BatteryIcon(),
+                widget.TextBox("🔋"),
                 widget.Battery(format="{percent:2.0%}", background="#5f875f", foreground="#eee"),
                 widget.Volume(emoji=True),
                 widget.Volume(background="#005f87"),
