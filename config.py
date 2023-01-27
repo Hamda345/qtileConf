@@ -6,7 +6,6 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
 mod = "mod4"
-#terminal = guess_terminal()
 
 keys = [
     # A list of available commands that can be bound to keys can be found
@@ -16,7 +15,8 @@ keys = [
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
+    Key([mod], "space", lazy.next_layout(), desc="Move window focus to other window"),
+    # Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
@@ -42,7 +42,8 @@ keys = [
     ),
     Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod], "Tab", lazy.layout.next(), desc="Toggle between layouts"),
+    # Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
@@ -142,10 +143,10 @@ screens = [
                 widget.Systray(),
                 widget.Memory(measure_mem="G"),
                 widget.TextBox("🔋"),
-                widget.Battery(format="{percent:2.0%}", background="#5f875f", foreground="#eee"),
+                widget.Battery(format="{percent:2.0%}"),
                 widget.TextBox(" "),
                 widget.TextBox("🔊"),
-                widget.Volume(background="#005f87"),
+                widget.Volume(),
                 # widget.Bluetooth(),
                 # widget.Backlight(brightness_file="/sys/class/backlight/amdgpu_bl0/max_brightness"),
                 widget.TextBox(" "),
@@ -161,9 +162,9 @@ screens = [
                 widget.TextBox(" "),
                 widget.Notify(),
                 widget.TextBox(" "),
-                widget.CheckUpdates(distro='Fedora', background="#d84949"),
+                widget.CheckUpdates(distro='Fedora'),
                 ],
-            24,
+            30,
              # border_width=[1, 1, 1, 1],  # Draw top and bottom borders
              # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
              background="#01161b",
