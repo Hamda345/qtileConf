@@ -1,5 +1,7 @@
 #!/bin/zsh
-nitrogen --resotre &
+/usr/bin/emacs --daemon &
 xfce4-power-manager &
 picom &
+nitrogen --resotre &
 nm-applet &
+

@@ -29,7 +29,7 @@ keys = [
     Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([mod], "m", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -41,6 +41,7 @@ keys = [
         desc="Toggle between split and unsplit sides of stack",
     ),
     Key([mod], "Return", lazy.spawn("kitty"), desc="Launch terminal"),
+    Key([mod], "n", lazy.spawn("rofi-wifi-menu")),
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.layout.next(), desc="Toggle between layouts"),
     # Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -63,9 +64,9 @@ keys = [
     ))),
 ]
 
-group_names = ["ampersand", "eacute", "quotedbl", "apostrophe", "parenleft"]
+group_names = ["ampersand", "eacute", "quotedbl", "apostrophe"]
 
-group_labels = ["", "", "", "", "",]
+group_labels = ["", "", "", "",]
 
 groups = []
 for i in range(len(group_names)):
@@ -100,25 +101,34 @@ for i in groups:
         ]
     )
 
+
+def init_layout_theme():
+    return {"margin":5,
+            "border_width":2,
+            "border_focus": "#5e81ac",
+            "border_normal": "#4c566a"
+            }
+layout_theme = init_layout_theme()
+
 layouts = [
-    layout.Columns(border_focus="#5f875f", border_normal="#000000", border_width=4),
-    layout.Max(),
+    layout.Columns(**layout_theme),
+    layout.Max(**layout_theme),
     # Try more layouts by unleashing below layouts.
-    layout.Stack(num_stacks=2),
-    layout.Bsp(),
-    layout.Matrix(),
-    layout.MonadTall(),
-    layout.MonadWide(),
-    layout.RatioTile(),
-    layout.Tile(),
-    layout.TreeTab(),
-    layout.VerticalTile(),
-    layout.Zoomy(),
+    layout.Stack(**layout_theme),
+    layout.Bsp(**layout_theme),
+    layout.Matrix(**layout_theme),
+    layout.MonadTall(**layout_theme),
+    layout.MonadWide( **layout_theme),
+    layout.RatioTile( **layout_theme),
+    layout.Tile( **layout_theme),
+    layout.TreeTab( **layout_theme),
+    layout.VerticalTile( **layout_theme),
+    layout.Zoomy( **layout_theme),
 ]
 
 widget_defaults = dict(
     font="JetBrains Mono",
-    fontsize=14,
+    fontsize=15,
     padding=4,
 )
 extension_defaults = widget_defaults.copy()
@@ -140,35 +150,42 @@ screens = [
                 ),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                widget.Systray(),
+                widget.TextBox(" "),
+                widget.Wallpaper(directory="~/Pictures/Wallpapers/", label="🖼️"),
+                widget.TextBox(" "),
+                widget.Image(filename="~/.config/qtile/ram.png"),
                 widget.Memory(measure_mem="G"),
-                widget.TextBox("🔋"),
+ #               widget.TextBox("🔋"),
+                widget.Image(filename="~/.config/qtile/battery.png"),
                 widget.Battery(format="{percent:2.0%}"),
                 widget.TextBox(" "),
-                widget.TextBox("🔊"),
+ #               widget.TextBox("🔊"),
+                widget.Image(filename="~/.config/qtile/sound.png"),
                 widget.Volume(),
                 # widget.Bluetooth(),
                 # widget.Backlight(brightness_file="/sys/class/backlight/amdgpu_bl0/max_brightness"),
                 widget.TextBox(" "),
                 widget.TextBox("🌡"),
                 widget.ThermalZone(),
-                widget.NvidiaSensors(),
+               # widget.NvidiaSensors(),
                 widget.TextBox(" "),
                 widget.TextBox(" "),
                 widget.Net(interface="wlo1"),
                 widget.TextBox(" "),
-                widget.TextBox(" "),
-                widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
+                widget.TextBox(" "),
+                widget.Clock(format="%Y-%m-%d %H:%M", background="#005f87"),
                 widget.TextBox(" "),
                 widget.Notify(),
                 widget.TextBox(" "),
                 widget.CheckUpdates(distro='Fedora'),
+                widget.Systray(),
                 ],
-            30,
+            35,
              # border_width=[1, 1, 1, 1],  # Draw top and bottom borders
              # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
              background="#01161b",
              opacity=0.6,
+             border_width=[1, 1, 6, 1]
         ),
     ),
 ]
